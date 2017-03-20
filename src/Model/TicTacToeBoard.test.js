@@ -73,29 +73,6 @@ describe("TicTacToeBoard Test", function () {
         expect(this.board.xIsNext).toBeFalsy();
     });
 
-    it("should know the old game state", () => {
-        var nullstate = this.board.toString();
-        this.board.placeMarker(0, 0); //1
-        this.board.placeMarker(0, 1); //2
-        this.board.placeMarker(0, 2); //3
-        var oldState = this.board.toString();
-        this.board.placeMarker(1, 0); //4
-        this.board.rememberMove(3);
-        var newState = this.board.toString();
-        expect(newState).toEqual(oldState);
-        // Does it remember correctly after time travel?
-
-        this.board.placeMarker(1, 1); //4 new
-        oldState = this.board.toString();
-        this.board.placeMarker(1, 2); //5 
-        this.board.rememberMove(4);
-        newState = this.board.toString();
-        expect(newState).toEqual(oldState);
-        this.board.rememberMove(0);
-        newState = this.board.toString();
-        expect(newState).toEqual(nullstate);
-    });
-
     it("should convert into single dimension array", () => {
         var arr = Array(9).fill(null);
         var boardArr = this.board.toArray();
@@ -114,19 +91,24 @@ describe("TicTacToeBoard Test", function () {
         expect(boardArr).toEqual(arr);
     });
 
-    it("should return the current step number", () => {
+    it("should contain the correct history", () => {
+        var emptyBoard = this.board.getBoardCopy();
+        expect(this.board.moveList[0]).toEqual(emptyBoard);
+
         this.board.placeMarker(0, 0);
-        var step = this.board.getStep();
-        expect(step).toEqual(1);
-        this.board.placeMarker(0, 1);
-        step = this.board.getStep();
-        expect(step).toEqual(2);
+        var firstMoveBoard = this.board.getBoardCopy();
+
+        expect(this.board.moveList[0]).toEqual(emptyBoard);
+        expect(this.board.moveList[1]).toEqual(firstMoveBoard);
     });
 
-    it("should reset the step after clearing the board", () => {
+    it("should contain the correct history after time travel", () => {
+        var emptyBoard = this.board.getBoardCopy();
         this.board.placeMarker(0, 0);
-        this.board.clearBoard();
-        var step = this.board.getStep();
-        expect(step).toEqual(0);
+        var firstMoveBoard = this.board.getBoardCopy();
+        this.board.rememberMove(0);
+        this.board.placeMarker(0, 0);
+        expect(this.board.moveList[0]).toEqual(emptyBoard);
+        expect(this.board.moveList[1]).toEqual(firstMoveBoard);
     });
 });

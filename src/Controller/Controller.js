@@ -40,6 +40,8 @@ class Controller {
      * @param {*} i The index of the clicked square.
      */
     handleClick(i) {
+
+        var tttb = this.ticTacToeBoard;
         var x = i % 3;
         var y = Math.floor(i / 3);
 
@@ -50,7 +52,7 @@ class Controller {
             return;
         }
         this.ticTacToeBoard.placeMarker(x, y);
-        this.view.updateView(winner, this.ticTacToeBoard.xIsNext, this.ticTacToeBoard.getStep(), this.ticTacToeBoard.toArray());
+        this.view.updateView(winner, tttb.xIsNext, tttb.step, tttb.toArray());
     }
 
     /**
@@ -59,8 +61,9 @@ class Controller {
      * @param {*} step The index of the move to jump back to.
      */
     jumpToMove(step) {
+        var tttb = this.ticTacToeBoard;
         this.ticTacToeBoard.rememberMove(step);
-        this.view.updateView(null, this.ticTacToeBoard.xIsNext, this.ticTacToeBoard.getStep(), this.ticTacToeBoard.toArray());
+        this.view.updateView(null, tttb.xIsNext, tttb.step, tttb.toArray());
     }
 
     /**

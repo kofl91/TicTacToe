@@ -107,12 +107,6 @@ class TicTacToeBoard {
     at(x, y) {
         return this.board[x][y];
     }
-    /**
-     * Returns the current step
-     */
-    getStep() {
-        return this.step;
-    }
 
     /**
      * Expresses the status of the board as a string. Looks as follows:
@@ -175,7 +169,7 @@ class TicTacToeBoard {
      * Returns a copy of the current board.
      */
     getBoardCopy() {
-        return this.copyBoard(this.board);;
+        return this.copyBoard(this.board);
     }
 }
 

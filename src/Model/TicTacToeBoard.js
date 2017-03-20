@@ -40,9 +40,10 @@ class TicTacToeBoard {
                 this.board[i][j] = ' ';
             }
         }
+        this.step = 0;
         this.moveList = [];
         this.saveCurrentState();
-        this.step = 0;
+        this.step = 1;
     }
 
     /**
@@ -73,8 +74,8 @@ class TicTacToeBoard {
             this.placeCircle(x, y);
         }
 
-        this.step++;
         this.saveCurrentState();
+        this.step = this.step + 1;
         this.xIsNext = !this.xIsNext;
     }
 
@@ -82,10 +83,8 @@ class TicTacToeBoard {
      * Saves the current state of the game.
      */
     saveCurrentState() {
-        var newState = this.board.map(function (arr) {
-            return arr.slice();
-        });
-        this.moveList.push(newState);
+        var newState = this.getBoardCopy();
+        this.moveList[this.step] = newState;
     }
 
     /**
@@ -95,8 +94,8 @@ class TicTacToeBoard {
     */
     rememberMove(move) {
         this.moveList = this.moveList.slice(0, move + 1);
-        this.board = this.moveList[move];
-        this.step = move;
+        this.board = this.copyBoard(this.moveList[move]);
+        this.step = move + 1;
         this.xIsNext = (move % 2)
             ? false
             : true;
@@ -156,6 +155,27 @@ class TicTacToeBoard {
             }
         }
         return arr;
+    }
+
+    /**
+     * Returns a copy of a referenced board.
+     */
+    copyBoard(refBoard) {
+        var newState = Array(3).fill('');
+        for (var i = 0; i < this.boardsize; i++) {
+            newState[i] = Array(3).fill('');
+            for (var j = 0; j < this.boardsize; j++) {
+                newState[i][j] = refBoard[i][j];
+            }
+        }
+        return newState;
+    }
+
+    /**
+     * Returns a copy of the current board.
+     */
+    getBoardCopy() {
+        return this.copyBoard(this.board);;
     }
 }
 

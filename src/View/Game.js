@@ -28,9 +28,9 @@ class Game extends React.Component {
         super();
         this.controller = new Controller(this);
         this.state = {
-            status: "",
-            board: Array(9).fill(null),
-            moves: [],
+            board: [],
+            status: this.formatStatus(null, true),
+            moves: this.formatHistory([])
         };
     }
 
